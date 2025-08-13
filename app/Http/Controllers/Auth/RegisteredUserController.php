@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Padukuhan;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use SweetAlert2\Laravel\Swal;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +23,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $padukuhanPlayen = Padukuhan::all();
+        return view('auth.register', compact('padukuhanPlayen'));
     }
 
     /**
@@ -46,6 +50,31 @@ class RegisteredUserController extends Controller
             $path = 'profile_pictures/profile.png'; // path default
         }
 
+        $profilePicturePath = null;
+        // Cek apakah ada input 'profile_picture' yang dikirim oleh FilePond
+        if ($request->filled('profile_picture')) {
+            try {
+                // FilePond mengirim JSON string yang berisi data base64
+                $fileData = json_decode($request->input('profile_picture'), true);
+
+                // Ambil data base64 dari array
+                // Formatnya: "data:image/jpeg;base64,....."
+                @list($type, $fileData) = explode(';', $fileData['data']);
+                @list(, $fileData) = explode(',', $fileData);
+
+                // Buat nama file yang unik
+                $fileName = 'profile_pictures/' . Str::random(20) . '.' . ($fileData['type'] ?? 'jpg');
+
+                // Simpan file dari data base64
+                Storage::disk('public')->put($fileName, base64_decode($fileData));
+
+                $profilePicturePath = $fileName;
+            } catch (\Exception $e) {
+                // Jika terjadi error saat decode, abaikan saja dan lanjutkan tanpa gambar
+                // Anda bisa menambahkan logging di sini jika perlu
+            }
+        }
+
         $user = User::create([
             'name'            => $request->name,
             'email'           => $request->email,
@@ -62,6 +91,14 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        // SweetAlert untuk menampilkan pesan sukses
+        Swal::success([
+            'title' => 'Registrasi berhasil',
+            'position' => 'center',
+            'showConfirmButton' => true,
+            'confirmButtonColor' => '#1f2937',
+            'timer' => 3000,
+        ]);
+        return redirect()->route('nasabah.dashboard');
     }
 }

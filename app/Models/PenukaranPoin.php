@@ -20,6 +20,7 @@ class PenukaranPoin extends Model
         'requested_at',
         'approved_at',
         'rejected_at',
+        'claimed_at',
         'nasabah_id',
         'hadiah_id',
         'admin_id',

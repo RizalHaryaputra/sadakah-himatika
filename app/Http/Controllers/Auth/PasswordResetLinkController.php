@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
+use SweetAlert2\Laravel\Swal;
 
 class PasswordResetLinkController extends Controller
 {
@@ -37,8 +38,8 @@ class PasswordResetLinkController extends Controller
         );
 
         return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
+                    ? back()->with('status', __('Link reset password berhasil dikirim'))
                     : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+                        ->withErrors(['email' => __('Email pengguna tidak ditemukan')]);
     }
 }
