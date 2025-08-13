@@ -3,127 +3,6 @@
 @section('content')
 
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-green-primary shadow-lg fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <img src="{{ asset('images/logo.png') }}" alt="SADAKAH Logo" class="h-10 w-10">
-                    <span class="ml-3 text-white font-bold text-xl">SADAKAH</span>
-                </div>
-
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#beranda"
-                            class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium">Beranda</a>
-                        <a href="#tentang"
-                            class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium">Tentang</a>
-                        <a href="#produk"
-                            class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium">Produk</a>
-                        <a href="#bank-sampah" class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium">Bank
-                            Sampah</a>
-                        <a href="#artikel"
-                            class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium">Artikel</a>
-                        <a href="#tukar-poin" class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium">Tukar
-                            Poin</a>
-                    </div>
-                </div>
-
-                @if(Auth::check())
-                <div class="hidden md:flex items-center gap-4">
-                    <div class="text-right leading-tight">
-                        <p class="text-sm text-white font-semibold">
-                            {{ Auth::user()->name }}
-                        </p>
-                        <p class="text-xs text-gray-300">
-                            {{ number_format(Auth::user()->total_poin) }} poin
-                        </p>
-                    </div>
-
-                    <a href="{{ route('dashboard') }}" class="relative group">
-                        <div
-                            class="w-10 h-10 rounded-full overflow-hidden border-2 border-white group-hover:scale-105 transition-transform duration-300 shadow-lg">
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile"
-                                class="w-full h-full object-cover">
-                        </div>
-                        {{-- <span
-                            class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full"></span>
-                        --}}
-                    </a>
-                </div>
-                @else
-
-
-                <div class="hidden md:block">
-                    <a href="{{route('login')}}">
-                        <button
-                            class="bg-green-dark text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-secondary transition duration-300">
-                            Masuk
-                        </button>
-                    </a>
-                </div>
-                @endif
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="text-white p-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-green-primary">
-            <div class="px-4 pt-4 pb-6 space-y-1">
-
-                {{-- Info user jika sudah login --}}
-                @if(Auth::check())
-                <div class="flex items-center gap-3 mb-4">
-                    <a href="{{ route('dashboard') }}" class="relative group">
-                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                            <img src="{{ asset('storage/'. Auth::user()->profile_picture) }}" alt="Profile"
-                                class="w-full h-full object-cover">
-                        </div>
-                    </a>
-                    <div class="text-white">
-                        <p class="text-sm font-semibold leading-tight">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-gray-200">{{ number_format(Auth::user()->total_poin) }} poin</p>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Menu links --}}
-                <a href="#beranda" class="nav-link text-white block px-3 py-2 text-base font-medium">Beranda</a>
-                <a href="#tentang" class="nav-link text-white block px-3 py-2 text-base font-medium">Tentang</a>
-                <a href="#produk" class="nav-link text-white block px-3 py-2 text-base font-medium">Produk</a>
-                <a href="#bank-sampah" class="nav-link text-white block px-3 py-2 text-base font-medium">Bank Sampah</a>
-                <a href="#artikel" class="nav-link text-white block px-3 py-2 text-base font-medium">Artikel</a>
-                <a href="#tukar-poin" class="nav-link text-white block px-3 py-2 text-base font-medium">Tukar Poin</a>
-
-                {{-- Tombol login atau logout --}}
-                @auth
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
-                        class="bg-red-800 text-white px-4 py-2 rounded-md text-sm font-medium w-full mt-3">
-                        Keluar
-                    </button>
-                </form>
-                @else
-                <a href="{{ route('login') }}">
-                    <button class="bg-green-dark text-white px-4 py-2 rounded-md text-sm font-medium w-full mt-3">
-                        Masuk
-                    </button>
-                </a>
-                @endauth
-            </div>
-        </div>
-
-    </nav>
 
     <!-- Hero Section -->
     <section id="beranda"
@@ -163,16 +42,18 @@
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 <div class="stat-card bg-white bg-opacity-90 backdrop-blur-md rounded-xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-bold text-green-primary mb-2">32 Kg</div>
+                    <div class="text-3xl md:text-4xl font-bold text-green-primary mb-2">
+                        {{number_format($totalSampahMasuk)}} Kg</div>
                     <div class="text-gray-600 font-medium">Sampah dikumpulkan</div>
                 </div>
                 <div class="stat-card bg-white bg-opacity-90 backdrop-blur-md rounded-xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-bold text-green-primary mb-2">10.8K</div>
+                    <div class="text-3xl md:text-4xl font-bold text-green-primary mb-2">{{$totalNasabah}}</div>
                     <div class="text-gray-600 font-medium">Pengguna</div>
                 </div>
                 <div class="stat-card bg-white bg-opacity-90 backdrop-blur-md rounded-xl p-6 text-center">
-                    <div class="text-3xl md:text-4xl font-bold text-green-primary mb-2">54.3K</div>
-                    <div class="text-gray-600 font-medium">Koin ditukar</div>
+                    <div class="text-3xl md:text-4xl font-bold text-green-primary mb-2">{{number_format($poinBeredar)}}
+                    </div>
+                    <div class="text-gray-600 font-medium">Poin Beredar</div>
                 </div>
             </div>
         </div>
@@ -196,24 +77,28 @@
                         <div class="flex items-start">
                             <div
                                 class="flex-shrink-0 w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg class="text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
                                 </svg>
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Digitalisasi Pencatatan</h3>
                                 <p class="text-gray-600">Sistem pencatatan setoran sampah yang digital dan transparan
-                                    untuk memudahkan nasabah memantau kontribusi mereka.</p>
+                                    untuk memudahkan nasabah memantau setoran sampah.</p>
                             </div>
                         </div>
 
                         <div class="flex items-start">
                             <div
                                 class="flex-shrink-0 w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg class="text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                                 </svg>
+
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Sistem Poin Transparan</h3>
@@ -225,10 +110,12 @@
                         <div class="flex items-start">
                             <div
                                 class="flex-shrink-0 w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                                <svg class="text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                                 </svg>
+
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Marketplace Kerajinan</h3>
@@ -272,57 +159,55 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Product Card 1 -->
+                @forelse ($produkKerajinan as $produk)
                 <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <img src="https://tse3.mm.bing.net/th?id=OIP.X_tg9yf3SN0o7Qcnu7YzPAHaEL&pid=Api&P=0&h=220">
+                    <img src="{{ asset('storage/' . $produk->image_url) }}" alt="{{$produk->name}}"
+                        class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Kerajinan A</h3>
-                        <p class="text-2xl font-bold text-green-primary mb-4">Rp 120.000</p>
-                        <p class="text-gray-600 mb-6 text-sm">Kerajinan unik dari bahan daur ulang dengan kualitas
-                            premium dan desain menarik.</p>
-                        <button
-                            class="w-full bg-green-dark text-white py-3 rounded-lg font-semibold hover:bg-green-primary transition duration-300">
-                            Beli
-                        </button>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">{{$produk->name}}</h3>
+                        <p class="text-2xl font-bold text-green-primary mb-4">Rp{{ number_format($produk->price) }}</p>
+                        <p class="text-gray-600 mb-6 text-sm">Penjual: <span class="font-semibold">{{
+                                $produk->seller_name }}</p>
+                        <div class="flex flex-col gap-3 mb-3">
+                            @php
+                            // Format nomor WhatsApp (pastikan nomor di database diawali 62)
+                            $waNumber = preg_replace('/^0/', '62', $produk->whatsapp_number);
+                            // Buat pesan default yang akan diisi otomatis di WhatsApp
+                            $waMessage = "Halo, saya tertarik dengan produk '" . $produk->name . "' seharga Rp " .
+                            number_format($produk->price, 0, ',', '.') . ". Apakah produk ini masih tersedia?";
+                            @endphp
+                            <a href="https://wa.me/{{ $waNumber }}?text={{ rawurlencode($waMessage) }}" target="_blank"
+                                class="w-full inline-flex items-center justify-center px-8 py-3 border border-transparent rounded-lg shadow-sm text-base font-semibold text-white bg-green-dark hover:bg-green-primary transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-dark">
+                                <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.487 5.235 3.487 8.413 0 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.687-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.447-4.435-9.884-9.888-9.884-5.448 0-9.886 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01s-.521.074-.792.372c-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.203 5.077 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                                </svg>
+                                Beli via WhatsApp
+                            </a>
+                            <a href="{{ route('front.product-detail', $produk) }}">
+                                <button
+                                    class="w-full inline-block px-6 py-3 bg-white border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-100 transition duration-300">
+                                    Lihat Detail
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Product Card 2 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <img src="https://tse3.mm.bing.net/th?id=OIP.QOkvS6qJoiaFcqLj7Xdb7gHaEK&pid=Api&P=0&h=220">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Kerajinan B</h3>
-                        <p class="text-2xl font-bold text-green-primary mb-4">Rp 150.000</p>
-                        <p class="text-gray-600 mb-6 text-sm">Produk ramah lingkungan dengan sentuhan modern yang cocok
-                            untuk dekorasi rumah.</p>
-                        <button
-                            class="w-full bg-green-dark text-white py-3 rounded-lg font-semibold hover:bg-green-primary transition duration-300">
-                            Beli
-                        </button>
-                    </div>
+                @empty
+                <div class="col-span-3 text-center">
+                    <p class="text-gray-600">Tidak ada produk kerajinan yang tersedia saat ini.</p>
                 </div>
-
-                <!-- Product Card 3 -->
-                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <img src="https://tse2.mm.bing.net/th?id=OIP.zjiqcPmVO5zo52fxJfBUfAHaEK&pid=Api&P=0&h=220">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Kerajinan C</h3>
-                        <p class="text-2xl font-bold text-green-primary mb-4">Rp 120.000</p>
-                        <p class="text-gray-600 mb-6 text-sm">Inovasi kreatif dari sampah yang diubah menjadi barang
-                            berguna dan bernilai tinggi.</p>
-                        <button
-                            class="w-full bg-green-dark text-white py-3 rounded-lg font-semibold hover:bg-green-primary transition duration-300">
-                            Beli
-                        </button>
-                    </div>
-                </div>
+                @endforelse
             </div>
 
             <div class="text-center mt-12">
-                <button
-                    class="bg-green-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-secondary transition duration-300">
-                    Lihat Semua Produk
-                </button>
+                <a href="{{ route('front.products') }}">
+                    <button
+                        class="bg-green-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-secondary transition duration-300">
+                        Lihat Semua Produk
+                    </button>
+                </a>
             </div>
         </div>
     </section>
@@ -389,26 +274,26 @@
                     <div class="bg-gradient-to-r from-green-primary to-green-secondary rounded-2xl p-8 text-white">
                         <h3 class="text-2xl font-bold mb-6">Kategori Sampah</h3>
                         <div class="grid grid-cols-2 gap-4">
+                            @forelse($kategoriSampah as $kategori)
                             <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold">Plastik</div>
-                                <div class="text-sm opacity-80">Botol, kemasan, dll</div>
+                                <div class="text-2xl font-bold">{{$kategori->name}}</div>
+                                <div class="text-sm opacity-80">{{$kategori->points_per_kg}} Poin/Kg</div>
                             </div>
-                            <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold">Kertas</div>
-                                <div class="text-sm opacity-80">Koran, karton, dll</div>
+                            @empty
+                            <div class="text-center">
+                                <p class="text-gray-600">Tidak ada kategori sampah saat ini.</p>
                             </div>
-                            <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold">Logam</div>
-                                <div class="text-sm opacity-80">Kaleng, besi, dll</div>
-                            </div>
-                            <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold">Kaca</div>
-                                <div class="text-sm opacity-80">Botol kaca, dll</div>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
 
-                    <div class="bg-white border-2 border-green-light rounded-2xl p-8">
+                    <div class="text-center mt-4">
+                        <a href="{{ route('front.category') }}"
+                            class="w-full inline-block px-6 py-3 bg-white border border-gray-300 rounded-xl font-semibold text-gray-700 hover:bg-gray-100 transition duration-300">
+                            Lihat Semua Kategori Sampah
+                        </a>
+                    </div>
+                    {{-- <div class="bg-white border-2 border-green-light rounded-2xl p-8">
                         <h3 class="text-xl font-bold text-gray-900 mb-4">Keuntungan Bergabung</h3>
                         <ul class="space-y-3 text-gray-600">
                             <li class="flex items-center">
@@ -437,7 +322,7 @@
                                 <span>Komunitas yang peduli lingkungan dan saling mendukung</span>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -452,349 +337,119 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-                <!-- Peta -->
-                <div class="order-2 lg:order-1">
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden h-96">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15801.123456789!2d110.123456!3d-7.8765432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sPlayen%2C%20Gunungkidul!5e0!3m2!1sen!2sid!4v1234567890123"
-                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                </div>
-
-                <!-- Info Utama -->
-                <div class="order-1 lg:order-2 space-y-6">
-                    <div class="bg-gradient-to-r from-green-primary to-green-secondary rounded-2xl p-8 text-white">
-                        <h3 class="text-2xl font-bold mb-4">Rumah Sampah Utama</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-start">
-                                <svg class="w-6 h-6 mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <div>
-                                    <p class="font-semibold">Alamat:</p>
-                                    <p class="opacity-90">Jl. Raya Playen No. 45, Desa Playen, Gunungkidul, DIY</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-6 h-6 mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <div>
-                                    <p class="font-semibold">Jam Operasional:</p>
-                                    <p class="opacity-90">Senin - Sabtu: 08:00 - 16:00 WIB</p>
-                                    <p class="opacity-90">Minggu: Tutup</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-6 h-6 mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                                </svg>
-                                <div>
-                                    <p class="font-semibold">Kontak:</p>
-                                    <p class="opacity-90">+62 812-3456-7890</p>
-                                </div>
-                            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Lokasi 1 -->
+                @forelse($lokasiBankSampah as $bank)
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
+                    <div class="flex items-start mb-4">
+                        <div
+                            class="w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-4 flex-grow">
+                            <h4 class="text-lg font-bold text-gray-900 mb-1">{{$bank->name}}</h4>
+                            <p class="text-sm text-green-primary font-medium mb-2">Dusun Karangasem</p>
                         </div>
                     </div>
-
-                    <div class="bg-white rounded-2xl p-6 shadow-lg border border-green-light">
-                        <h4 class="text-lg font-bold text-gray-900 mb-4">Fasilitas Tersedia</h4>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-green-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Timbangan Digital
-                            </div>
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-green-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Area Sortir
-                            </div>
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-green-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Tempat Parkir
-                            </div>
-                            <div class="flex items-center text-sm text-gray-600">
-                                <svg class="w-4 h-4 text-green-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                WiFi Gratis
-                            </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <p><span class="font-medium">Alamat:</span> {{$bank->address}}</p>
+                        <p><span class="font-medium">Jam:</span> {{$bank->operation_hours}}</p>
+                        <p><span class="font-medium">Petugas:</span> {{$bank->contact_person}}
+                            ({{$bank->phone_number}})</p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-green-primary font-medium">Status: Aktif</span>
+                            <a href="{{route('front.bank-detail', $bank)}}">
+                                <button class="text-green-primary hover:text-green-dark font-medium">Lihat
+                                    Detail</button>
+                            </a>
                         </div>
                     </div>
                 </div>
+                @empty
+                <div class="col-span-3 text-center">
+                    <p class="text-gray-600">Tidak ada lokasi bank sampah lainnya saat ini.</p>
+                </div>
+                @endforelse
             </div>
-
-            <!-- Lokasi Bank Sampah Lainnya -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Lokasi Bank Sampah Lainnya di Desa Playen
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Lokasi 1 -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
-                        <div class="flex items-start mb-4">
-                            <div
-                                class="w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <h4 class="text-lg font-bold text-gray-900 mb-1">Pos Sampah RT 01</h4>
-                                <p class="text-sm text-green-primary font-medium mb-2">Dusun Karangasem</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <p><span class="font-medium">Alamat:</span> Jl. Karangasem No. 12, RT 01/RW 01</p>
-                            <p><span class="font-medium">Jam:</span> Selasa & Jumat, 14:00-17:00</p>
-                            <p><span class="font-medium">Petugas:</span> Bu Sari (0812-1111-2222)</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-green-primary font-medium">Status: Aktif</span>
-                                <button class="text-green-primary hover:text-green-dark font-medium">Lihat
-                                    Detail</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lokasi 2 -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
-                        <div class="flex items-start mb-4">
-                            <div
-                                class="w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <h4 class="text-lg font-bold text-gray-900 mb-1">Pos Sampah RT 03</h4>
-                                <p class="text-sm text-green-primary font-medium mb-2">Dusun Wonogiri</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <p><span class="font-medium">Alamat:</span> Jl. Wonogiri No. 8, RT 03/RW 02</p>
-                            <p><span class="font-medium">Jam:</span> Senin & Kamis, 15:00-18:00</p>
-                            <p><span class="font-medium">Petugas:</span> Pak Budi (0812-3333-4444)</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-green-primary font-medium">Status: Aktif</span>
-                                <button class="text-green-primary hover:text-green-dark font-medium">Lihat
-                                    Detail</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lokasi 3 -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
-                        <div class="flex items-start mb-4">
-                            <div
-                                class="w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <h4 class="text-lg font-bold text-gray-900 mb-1">Pos Sampah RT 05</h4>
-                                <p class="text-sm text-green-primary font-medium mb-2">Dusun Grogol</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <p><span class="font-medium">Alamat:</span> Jl. Grogol No. 25, RT 05/RW 03</p>
-                            <p><span class="font-medium">Jam:</span> Rabu & Sabtu, 13:00-16:00</p>
-                            <p><span class="font-medium">Petugas:</span> Bu Ratna (0812-5555-6666)</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-green-primary font-medium">Status: Aktif</span>
-                                <button class="text-green-primary hover:text-green-dark font-medium">Lihat
-                                    Detail</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lokasi 4 -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
-                        <div class="flex items-start mb-4">
-                            <div
-                                class="w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <h4 class="text-lg font-bold text-gray-900 mb-1">Pos Sampah RT 07</h4>
-                                <p class="text-sm text-green-primary font-medium mb-2">Dusun Kedungsari</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <p><span class="font-medium">Alamat:</span> Jl. Kedungsari No. 33, RT 07/RW 04</p>
-                            <p><span class="font-medium">Jam:</span> Selasa & Sabtu, 14:30-17:30</p>
-                            <p><span class="font-medium">Petugas:</span> Pak Joko (0812-7777-8888)</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-green-primary font-medium">Status: Aktif</span>
-                                <button class="text-green-primary hover:text-green-dark font-medium">Lihat
-                                    Detail</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lokasi 5 -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
-                        <div class="flex items-start mb-4">
-                            <div
-                                class="w-12 h-12 bg-green-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <h4 class="text-lg font-bold text-gray-900 mb-1">Pos Sampah RT 09</h4>
-                                <p class="text-sm text-green-primary font-medium mb-2">Dusun Pucung</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <p><span class="font-medium">Alamat:</span> Jl. Pucung No. 17, RT 09/RW 05</p>
-                            <p><span class="font-medium">Jam:</span> Senin & Jumat, 15:30-18:30</p>
-                            <p><span class="font-medium">Petugas:</span> Bu Ningsih (0812-9999-0000)</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-green-primary font-medium">Status: Aktif</span>
-                                <button class="text-green-primary hover:text-green-dark font-medium">Lihat
-                                    Detail</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lokasi 6 -->
-                    <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300">
-                        <div class="flex items-start mb-4">
-                            <div
-                                class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-4 flex-grow">
-                                <h4 class="text-lg font-bold text-gray-900 mb-1">Pos Sampah RT 11</h4>
-                                <p class="text-sm text-yellow-600 font-medium mb-2">Dusun Bleberan</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm text-gray-600">
-                            <p><span class="font-medium">Alamat:</span> Jl. Bleberan No. 41, RT 11/RW 06</p>
-                            <p><span class="font-medium">Jam:</span> Kamis & Minggu, 14:00-17:00</p>
-                            <p><span class="font-medium">Petugas:</span> Pak Surono (0812-1010-1111)</p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="text-yellow-600 font-medium">Status: Dalam Perbaikan</span>
-                                <button class="text-gray-400 cursor-not-allowed font-medium">Lihat Detail</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="text-center mt-12">
+                <a href="{{ route('front.bank') }}">
+                    <button
+                        class="bg-green-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-secondary transition duration-300">
+                        Lihat Semua Bank Sampah
+                    </button>
+                </a>
             </div>
 
             <!-- Info Tambahan -->
-            <div class="bg-gradient-to-r from-green-primary to-green-secondary rounded-2xl p-8 text-white text-center">
-                <h3 class="text-2xl font-bold mb-4">Ingin Membuka Pos Sampah Baru?</h3>
+            <div
+                class="bg-gradient-to-r from-green-primary to-green-secondary rounded-2xl p-8 text-white text-center mt-12">
+                @php
+                $waMessage = "Hallo Admin, saya ingin mengunggah Artikel atau Produk Olahan Sampah"
+                @endphp
+                <h3 class="text-2xl font-bold mb-4">Ingin Mengunggah Artikel atau Produk Olahan Sampah Baru?</h3>
                 <p class="text-lg mb-6 opacity-90">
-                    Jika komunitas Anda tertarik untuk membuka pos sampah baru di RT/RW masing-masing,
-                    silakan hubungi tim koordinator kami.
+                    Jika Anda tertarik untuk mengunggah artikel/berita seputar pengolahan sampah atau memasarkan produk
+                    olahan sampah pada website SADAKAH, silakan hubungi Admin kami.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button
-                        class="bg-white text-green-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
-                        Hubungi Koordinator
-                    </button>
+                    <a href="https://wa.me/+6287855038324?text={{ rawurlencode($waMessage) }}" target="_blank">
+                        <button
+                            class="bg-white text-green-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                            Hubungi Admin
+                        </button>
+                    </a>
                     <button
                         class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-primary transition duration-300">
-                        Download Panduan
+                        Syarat dan Ketentuan
                     </button>
                 </div>
             </div>
         </div>
     </section>
+
     <!-- Articles Section -->
     <section id="artikel" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Artikel Terbaru</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Dapatkan informasi dan tips seputar pengelolaan sampah, daur ulang, dan keberlanjutan.
+                    Dapatkan informasi seputar kegiatan PPK Ormawa HIMATIKA FMIPA UNY 2025 dan tips seputar pengolahan
+                    serta pengelolaan sampah organik dan anorganik.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Article Card 1 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="https://tse1.mm.bing.net/th?id=OIP.5gdg9XRhlk6YcGDDdG0rrAHaE8&pid=Api&P=0&h=220"
-                        alt="Artikel 1" class="w-full h-48 object-cover">
+                @forelse($kontenArtikel as $artikel)
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <img src="{{asset('storage/' . $artikel->image_url)}}" alt="{{$artikel->title}}"
+                        class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Mengapa Daur Ulang Penting?</h3>
-                        <p class="text-gray-600 mb-4">Daur ulang membantu mengurangi limbah dan menjaga lingkungan tetap
-                            bersih.</p>
-                        <a href="#" class="text-green-primary hover:underline">Baca Selengkapnya</a>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">{{$artikel->title}}</h3>
+                        <p class="text-gray-600 mb-4">{{$artikel->excerpt}}</p>
+                        <a href="{{route('front.article-detail', $artikel)}}"
+                            class="text-green-primary hover:underline">Baca Selengkapnya</a>
                     </div>
                 </div>
-
-                <!-- Article Card 2 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="https://tse4.mm.bing.net/th?id=OIP.8ClO1Y76VJPLIJC564XqoAHaE0&pid=Api&P=0&h=220"
-                        alt="Artikel 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Tips Mengurangi Sampah Plastik</h3>
-                        <p class="text-gray-600 mb-4">Beberapa cara sederhana untuk mengurangi penggunaan plastik dalam
-                            kehidupan sehari-hari.</p>
-                        <a href="#" class="text-green-primary hover:underline">Baca Selengkapnya</a>
-                    </div>
+                @empty
+                <div class="p-6">
+                    <p class="text-gray-600">Tidak ada artikel terbaru saat ini.</p>
                 </div>
-
-                <!-- Article Card 3 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img src="https://tse1.mm.bing.net/th?id=OIP.UbtbCwrgZ9sIjk9-MK2RkgHaE8&pid=Api&P=0&h=220"
-                        alt="Artikel 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Inovasi Daur Ulang Terbaru</h3>
-                        <p class="text-gray-600 mb-4">Teknologi terbaru dalam daur ulang yang dapat membantu mengurangi
-                            limbah.</p>
-                        <a href="#" class="text-green-primary hover:underline">Baca Selengkapnya</a>
-                    </div>
-                </div>
+                @endforelse
             </div>
             <div class="text-center mt-12">
-                <button
-                    class="bg-green-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-secondary transition duration-300">
-                    Lihat Semua Artikel
-                </button>
+                <a href="{{ route('front.articles') }}">
+                    <button
+                        class="bg-green-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-secondary transition duration-300">
+                        Lihat Semua Artikel
+                    </button>
+                </a>
             </div>
         </div>
     </section>
@@ -804,119 +459,97 @@
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Tukar Poin Anda</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Tukarkan poin yang telah Anda kumpulkan dengan berbagai hadiah menarik dan sembako.
+                    Tukarkan poin yang telah Anda kumpulkan dengan sembako dan uang tunai.
                 </p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Reward Card 1 -->
+                @forelse($hadiahPoin as $hadiah)
                 <div class="bg-green-light bg-opacity-20 rounded-lg p-6 text-center">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Paket Sembako</h3>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">{{$hadiah->name}}</h3>
                     <p class="text-green
--primary text-2xl font-bold mb-4">100 Poin</p>
-                    <p class="text-gray-600 mb-4">Dapatkan paket sembako lengkap untuk kebutuhan sehari-hari.</p>
-                    <button
-                        class="bg-green-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-secondary transition duration-300">
-                        Tukar Sekarang
-                    </button>
-                </div>
+-primary text-2xl font-bold mb-4">{{ number_format($hadiah->point_cost, 0,
+                        ',', '.') }} Poin</p>
+                    <p class="text-gray-600 mb-4">{{$hadiah->description}}</p>
+                    <form action="{{ route('front.redemption-request') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="hadiah_id" value="{{$hadiah->id}}">
+                        @if(!Auth::check())
+                        <button type="submit"
+                            class="bg-green-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-secondary transition duration-300">
+                            Tukar Sekarang
+                        </button>
+                        @elseif(Auth::user()->total_poin < $hadiah->point_cost)
+                            <button type="button"
+                                class="bg-gray-300 text-gray-600 px-6 py-3 rounded-lg font-semibold cursor-not-allowed">
+                                Poin Tidak Cukup
+                            </button>
+                            @elseif(Auth::user()->total_poin >= $hadiah->point_cost)
+                            <button type="submit"
+                                class="bg-green-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-secondary transition duration-300">
+                                Tukar Sekarang
+                            </button>
+                            @endif
+                    </form>
 
-                <!-- Reward Card 2 -->
-                <div class="bg-green-light bg-opacity-20 rounded-lg p-6 text-center">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Voucher Belanja</h3>
-                    <p class="text-green
--primary text-2xl font-bold mb-4">200 Poin</p>
-
-                    <p class="text-gray-600 mb-4">Voucher belanja untuk berbagai kebutuhan di toko mitra kami.</p>
-                    <button
-                        class="bg-green-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-secondary transition duration-300">
-                        Tukar Sekarang
-                    </button>
                 </div>
-
-                <!-- Reward Card 3 -->
-                <div class="bg-green-light bg-opacity-20 rounded-lg p-6 text-center">
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Produk Kerajinan</h3>
-                    <p class="text-green
--primary text-2xl font-bold mb-4">300 Poin</p>
-                    <p class="text-gray-600 mb-4">Tukar poin Anda dengan produk kerajinan unik hasil daur ulang.</p>
-                    <button
-                        class="bg-green-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-secondary transition duration-300">
-                        Tukar Sekarang
-                    </button>
+                @empty
+                <div class="p-6">
+                    <p class="text-gray-600">Tidak ada hadiah terbaru saat ini.</p>
                 </div>
+                @endforelse
+
             </div>
             <div class="text-center mt-12">
-                <button
-                    class="bg-green-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-secondary transition duration-300">
-                    Lihat Semua Hadiah
-                </button>
+                <a href="{{ route('front.rewards') }}">
+                    <button
+                        class="bg-green-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-secondary transition duration-300">
+                        Lihat Semua Hadiah
+                    </button>
+                </a>
             </div>
         </div>
     </section>
-    <!-- Footer -->
-    <footer class="bg-green-primary text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="text-center md:text-left mb-6 md:mb-0">
-                    <h3 class="text-2xl font-bold">SADAKAH</h3>
-                    <p class="mt-2">Sampah Dadi Berkah</p>
-                </div>
-                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
-                    <a href="#beranda" class="text-white hover:text-green-secondary transition duration-300">Beranda</a>
-                    <a href="#tentang" class="text-white hover:text-green-secondary transition duration-300">Tentang</a>
-                    <a href="#produk" class="text-white hover:text-green-secondary transition duration-300">Produk</a>
-                    <a href="#bank-sampah" class="text-white hover:text-green-secondary transition duration-300">Bank
-                        Sampah</a>
-                    <a href="#artikel" class="text-white hover:text-green-secondary transition duration-300">Artikel</a>
-                    <a href="#tukar-poin" class="text-white hover:text-green-secondary transition duration-300">Tukar
-                        Poin</a>
-                </div>
-            </div>
-            <div class="mt-8 text-center">
-                <p class="text-sm">&copy; 2025 SADAKAH. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+
 </body>
 @endsection
 
 
 @push('before-styles')
-    <style>
-        .hero-bg {
-            background: linear-gradient(rgba(122, 154, 101, 0.8), rgba(122, 154, 101, 0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><rect fill="%23f0f0f0" width="1000" height="600"/><circle fill="%23ddd" cx="200" cy="150" r="80"/><circle fill="%23bbb" cx="800" cy="400" r="120"/><rect fill="%23ccc" x="300" y="200" width="400" height="200" rx="20"/></svg>');
-            background-size: cover;
-            background-position: center;
-        }
+<style>
+    .hero-bg {
+        background: linear-gradient(rgba(122, 154, 101, 0.8), rgba(122, 154, 101, 0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600"><rect fill="%23f0f0f0" width="1000" height="600"/><circle fill="%23ddd" cx="200" cy="150" r="80"/><circle fill="%23bbb" cx="800" cy="400" r="120"/><rect fill="%23ccc" x="300" y="200" width="400" height="200" rx="20"/></svg>');
+        background-size: cover;
+        background-position: center;
+    }
 
-        .stat-card {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.9);
-        }
+    .stat-card {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.9);
+    }
 
-        .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
 
-        .nav-link {
-            transition: color 0.3s ease;
-        }
+    .nav-link {
+        transition: color 0.3s ease;
+    }
 
-        .nav-link:hover {
-            color: #B8D1A0;
-        }
-    </style>
+    .nav-link:hover {
+        color: #B8D1A0;
+    }
+</style>
 @endpush
 
 @push('before-scripts')
-    <script>
-        function toggleMobileMenu() {
+<script>
+    function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenu.classList.toggle('hidden');
         }
@@ -930,5 +563,5 @@
                 });
             });
         }); 
-    </script>
+</script>
 @endpush

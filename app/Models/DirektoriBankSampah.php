@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,4 +23,23 @@ class DirektoriBankSampah extends Model
         'contact_person',
         'phone_number',
     ];
+
+    /**
+     * The "booted" method of the model.
+     * Otomatis membuat slug saat data baru dibuat.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (DirektoriBankSampah $lokasi) {
+            if (empty($lokasi->slug)) {
+                $slug = Str::slug($lokasi->name);
+                $originalSlug = $slug;
+                $counter = 1;
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $originalSlug . '-' . $counter++;
+                }
+                $lokasi->slug = $slug;
+            }
+        });
+    }
 }

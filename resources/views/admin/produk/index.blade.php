@@ -6,17 +6,36 @@
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
+            <div class="bg-white overflow-hidden rounded-2xl shadow-lg">
                 <div class="p-6 text-gray-900">
-
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Daftar Produk</h3>
-                        <a href="#" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
-                            + Tambah Produk
+                        <a href="{{route('admin.produk.create')}}">
+                            <div
+                                class="flex items-center gap-2 bg-gray-800 text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-700 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                <p>Tambah</p>
+                            </div>
                         </a>
                     </div>
-
+                    <div class="mb-4">
+                        <form action="{{ route('admin.produk.index') }}" method="GET">
+                            <div class="flex items-center">
+                                <input type="text" name="search" placeholder="Cari berdasarkan nama produk..."
+                                    class="w-full md:w-1/3 border-gray-300 rounded-l-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                                    value="{{ request('search') }}">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-gray-800 border border-gray-800 text-gray-300 rounded-r-lg hover:bg-gray-700 hover:border-gray-700 text-sm">
+                                    Cari
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200 text-sm">
                             <thead class="bg-gray-100">
@@ -25,31 +44,33 @@
                                     <th class="px-4 py-2 text-left font-medium text-gray-600">Nama</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-600">Gambar</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-600">Harga</th>
-                                    <th class="px-4 py-2 text-left font-medium text-gray-600">Kontak</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-600">Penjual</th>
                                     <th class="px-4 py-2 text-left font-medium text-gray-600">Status</th>
                                     <th class="px-4 py-2 text-center font-medium text-gray-600">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                @foreach (range(1, 10) as $i)
+                                @forelse ($produkKerajinan as $index => $produk)
                                 <tr>
-                                    <td class="px-4 py-2">{{ $i }}</td>
-                                    <td class="px-4 py-2">Produk {{ $i }}</td>
-                                    <td class="px-4 py-2">Gambar {{ $i }}</td>
-                                    <td class="px-4 py-2">Rp. {{ rand(50, 200) }}</td>
-                                    <td class="px-4 py-2">{{ rand(50, 200) }}</td>
-                                    <td class="px-4 py-2">Penjual {{ $i }}</td>
+                                    <td class="px-4 py-2">{{$produkKerajinan->firstItem() + $index}}</td>
+                                    <td class="px-4 py-2">{{$produk->name}}</td>
+                                    <td class="px-4 py-2">
+                                        <img src="{{ asset('storage/'. $produk->image_url) }}" alt="{{ $produk->name }}"
+                                            class="w-10 h-10 object-cover rounded">
+                                    </td>
+                                    <td class="px-4 py-2">Rp. {{$produk->price}}</td>
+                                    <td class="px-4 py-2">{{$produk->seller_name}}</td>
                                     <td class="px-4 py-2">
                                         <span
                                             class="px-2 py-1 rounded text-xs font-semibold
-                                                {{ $i % 2 == 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                            {{ $i % 2 == 0 ? 'Aktif' : 'Nonaktif' }}
+                                                {{ $produk->is_active == true ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $produk->is_active == true ? 'Aktif' : 'Nonaktif' }}
                                         </span>
                                     </td>
                                     <td class="px-4 py-2 text-center">
                                         <div class="flex justify-center space-x-2">
-                                            <a href="#" title="Edit" class="text-blue-500 hover:text-blue-700">
+                                            <a href="{{route('admin.produk.edit', $produk)}}" title="Edit"
+                                                class="text-gray-700 hover:text-gray-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="size-5">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -57,42 +78,35 @@
                                                 </svg>
 
                                             </a>
-                                            <a href="#" title="Hapus" class="text-red-500 hover:text-red-700">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" class="size-5">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                </svg>
-
-                                            </a>
+                                            <form action="{{route('admin.produk.destroy', $produk)}}" method="POST"
+                                                id="deleteForm">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" title="Hapus" onclick="confirmDelete(this)"
+                                                    class="text-gray-700 hover:text-gray-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="size-5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                    </svg>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
-                                @endforeach
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-gray-500">Produk tidak ditemukan.</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Pagination Dummy -->
+                    <!-- Pagination -->
                     <div class="mt-4">
-                        <nav class="flex justify-end">
-                            <ul class="inline-flex -space-x-px text-sm">
-                                <li>
-                                    <a href="#"
-                                        class="px-3 py-1 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l hover:bg-gray-100 hover:text-gray-700">«</a>
-                                </li>
-                                @for ($page = 1; $page <= 5; $page++) <li>
-                                    <a href="#"
-                                        class="px-3 py-1 leading-tight {{ $page == 1 ? 'text-white bg-green-600 border-green-600' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700' }}">{{
-                                        $page }}</a>
-                                    </li>
-                                    @endfor
-                                    <li>
-                                        <a href="#"
-                                            class="px-3 py-1 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r hover:bg-gray-100 hover:text-gray-700">»</a>
-                                    </li>
-                            </ul>
-                        </nav>
+                        {{ $produkKerajinan->links() }}
                     </div>
 
                 </div>
@@ -100,3 +114,22 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    function confirmDelete(button) {
+    Swal.fire({
+        title: 'Yakin ingin menghapus?',
+        text: "Data tidak dapat dikembalikan!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#b91c1c',
+        cancelButtonColor: '#1F2937',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            button.closest('form').submit(); // submit form terdekat
+        }
+    });
+}
+</script>

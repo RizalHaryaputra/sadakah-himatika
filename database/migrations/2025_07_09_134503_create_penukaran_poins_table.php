@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('requested_at')->useCurrent();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('rejected_at')->nullable();
+            $table->timestamp('claimed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
